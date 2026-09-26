@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>صندوق أدوات التكييف — أدوات للمعلّمين</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c2b26; --muted:#5c6b64; --paper:#eef4f0; --card:#ffffff;
+    --line:#dbe6e0; --primary:#1f6b53; --primary-deep:#144d3b; --amber:#d1743a;
+    --visual:#3b7ea1; --text:#1f6b53; --worksheet:#d1743a; --banks:#8a5cb0; --math:#c2506a;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:90px;}
+  body{margin:0;font-family:'Cairo',system-ui,sans-serif;color:var(--ink);
+       background:var(--paper);line-height:1.6;font-size:16px;}
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 20px;}
+
+  /* hero */
+  header.hero{background:
+      radial-gradient(120% 90% at 100% 0%, #dcece4 0%, rgba(220,236,228,0) 60%),
+      linear-gradient(180deg,#e7f1eb 0%, var(--paper) 100%);
+      border-bottom:1px solid var(--line);}
+  .hero-inner{padding:38px 0 26px;}
+  .hero .kicker{color:var(--primary);font-weight:700;font-size:15px;margin-bottom:6px;}
+  .hero h1{font-size:clamp(28px,5vw,44px);font-weight:800;margin:0 0 8px;letter-spacing:-.5px;color:var(--primary-deep);}
+  .hero p.sub{font-size:clamp(15px,2.2vw,19px);color:var(--muted);margin:0 0 22px;max-width:60ch;}
+  .search-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .search{position:relative;flex:1;min-width:240px;max-width:520px;}
+  .search input{width:100%;padding:14px 46px 14px 16px;border:2px solid var(--line);
+      border-radius:14px;font-family:inherit;font-size:16px;background:#fff;color:var(--ink);}
+  .search input:focus{outline:none;border-color:var(--primary);}
+  .search svg{position:absolute;inset-inline-end:15px;top:50%;transform:translateY(-50%);
+      width:20px;height:20px;color:var(--muted);pointer-events:none;}
+  .count{color:var(--muted);font-size:14px;white-space:nowrap;}
+
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;}
+  .chip{font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
+      background:#fff;color:var(--ink);border:2px solid var(--line);
+      padding:8px 16px;border-radius:999px;transition:none;}
+  .chip:hover{border-color:var(--c,#9fb3ab);}
+  .chip[aria-pressed="true"]{background:var(--c,var(--primary));border-color:var(--c,var(--primary));color:#fff;}
+  .chip:focus-visible{outline:3px solid #a9d3c3;outline-offset:2px;}
+
+  /* sections */
+  main{padding:14px 0 40px;}
+  section.group{margin-top:34px;}
+  .group-head{display:flex;align-items:center;gap:12px;margin:0 0 16px;}
+  .group-head .bar{width:22px;height:22px;border-radius:7px;background:var(--c);flex:0 0 auto;}
+  .group-head h2{font-size:22px;font-weight:800;margin:0;color:var(--ink);}
+  .group-head .n{color:var(--muted);font-size:14px;font-weight:600;}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media(max-width:860px){.grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.grid{grid-template-columns:1fr;}}
+
+  .tool{background:var(--card);border:1px solid var(--line);
+      border-inline-start:5px solid var(--c);border-radius:14px;
+      padding:16px 18px;display:flex;flex-direction:column;}
+  .tool:hover{border-color:var(--c);}
+  .tool h3{font-size:18px;font-weight:700;margin:0 0 8px;}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .badge{font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;
+      background:#eef2f0;color:var(--muted);}
+  .badge.free{background:#e4f2ea;color:#1c7a52;}
+  .badge.paid{background:#f6e9df;color:#a85a26;}
+  .badge.ar{background:#e5eef4;color:#2f6a8c;}
+  .tool p.desc{margin:0 0 10px;font-size:14.5px;color:#33423c;}
+  .tool .howto{font-size:13.5px;color:var(--muted);margin:0 0 14px;}
+  .tool .howto b{color:var(--ink);font-weight:700;}
+  .tool .open{margin-top:auto;align-self:flex-start;display:inline-flex;align-items:center;gap:7px;
+      font-weight:700;font-size:14.5px;text-decoration:none;color:#fff;background:var(--c);
+      padding:9px 16px;border-radius:10px;}
+  .tool .open:hover{background:var(--primary-deep);}
+  .tool .open:focus-visible{outline:3px solid #a9d3c3;outline-offset:2px;}
+  .tool .open svg{width:15px;height:15px;}
+
+  .empty{display:none;text-align:center;color:var(--muted);padding:50px 20px;font-size:17px;}
+
+  footer{border-top:1px solid var(--line);background:#e9f1ec;}
+  footer .wrap{padding:22px 20px;color:var(--muted);font-size:14px;}
+  footer b{color:var(--ink);}
+
+  @media (prefers-reduced-motion: reduce){*{transition:none!important;}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <h1>صندوق أدوات التكييف</h1>
+    <p class="sub">مواقع وأدوات تساعدك على تكييف المهامّ لكلّ طالب — بسرعة. اختر مجالًا، أو ابحث عن أداة، وافتحها مباشرةً.</p>
+    <div class="search-row">
+      <div class="search">
+        <input id="q" type="search" placeholder="ابحث عن أداة…" aria-label="ابحث عن أداة">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="chips" id="chips">
+      <button class="chip" data-cat="all" aria-pressed="true">الكلّ</button>
+      <button class="chip" data-cat="visual" style="--c:var(--visual)" aria-pressed="false">الدعم البصريّ والرموز</button>
+      <button class="chip" data-cat="text" style="--c:var(--text)" aria-pressed="false">تبسيط النصوص</button>
+      <button class="chip" data-cat="worksheet" style="--c:var(--worksheet)" aria-pressed="false">أوراق العمل والاختبارات</button>
+      <button class="chip" data-cat="banks" style="--c:var(--banks)" aria-pressed="false">بنوك موادّ جاهزة</button>
+      <button class="chip" data-cat="math" style="--c:var(--math)" aria-pressed="false">الرياضيّات والجداول البصريّة</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- VISUAL -->
+  <section class="group" data-cat="visual" style="--c:var(--visual)">
+    <div class="group-head"><span class="bar"></span><h2>الدعم البصريّ والرموز</h2><span class="n"></span></div>
+    <div class="grid">
+
+      <article class="tool">
+        <h3>أراسّاك ARASAAC</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">مكتبة مجّانيّة ضخمة (أكثر من ١٠٬٠٠٠ رمز) بالألوان والأبيض والأسود، بعشرات اللغات ومنها العربية.</p>
+        <p class="howto"><b>الاستخدام:</b> ابحث عن كلمة، حمّل الرمز، أو استعمل مولّدات الموادّ لصنع بطاقات وجداول.</p>
+        <a class="open" href="https://arasaac.org" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>رموز تواصُل Tawasol</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">عربيّ أصيل</span></div>
+        <p class="desc">مجموعة رموز تواصل (AAC) عربيّة–إنجليزيّة مجّانيّة صُمّمت خصّيصًا للثقافة العربية (مركز مدى، قطر).</p>
+        <p class="howto"><b>الاستخدام:</b> تصفّح الرموز والجداول الجاهزة وحمّلها للتواصل والدعم البصريّ.</p>
+        <a class="open" href="https://tawasol.mada.org.qa" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Global Symbols</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">عدّة لغات</span></div>
+        <p class="desc">بحثٌ في آلاف الرموز المجّانيّة، وأداة «Board Builder» لصنع لوحات تواصل وطباعتها PDF.</p>
+        <p class="howto"><b>الاستخدام:</b> ابنِ لوحة من قالبٍ جاهز، أضِف رموزًا وصورك، ثمّ صدّرها PDF.</p>
+        <a class="open" href="https://globalsymbols.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Picto Selector</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">برنامج</span></div>
+        <p class="desc">برنامجٌ مجّانيّ لسطح المكتب فيه أكثر من ٣٠٬٠٠٠ رمز (أراسّاك، Mulberry، Sclera).</p>
+        <p class="howto"><b>الاستخدام:</b> نزّل البرنامج، اختر الرموز، واصنع بطاقات صور وجداول يوميّة للطباعة.</p>
+        <a class="open" href="https://www.pictoselector.eu" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Cboard</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">تطبيق تواصل (AAC) مجّانيّ مفتوح المصدر يعمل في المتصفّح مع نطقٍ صوتيّ، بعدّة لغات.</p>
+        <p class="howto"><b>الاستخدام:</b> افتحه في المتصفّح، وجهّز لوحة رموز ناطقة للطالب غير الناطق أو محدود الكلام.</p>
+        <a class="open" href="https://www.cboard.io" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>LessonPix</h3>
+        <div class="badges"><span class="badge paid">مدفوع</span></div>
+        <p class="desc">أداة بسيطة (نحو ٤٨$ سنويًّا) لصنع بطاقات صور وموادّ مخصّصة بسرعة.</p>
+        <p class="howto"><b>الاستخدام:</b> اكتب الكلمات، اختر الصور، واطبع بطاقات ومطابقات وجداول.</p>
+        <a class="open" href="https://lessonpix.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Boardmaker</h3>
+        <div class="badges"><span class="badge paid">مدفوع</span></div>
+        <p class="desc">المعيار المعروف لرموز PCS وصناعة الموادّ البصريّة (Tobii Dynavox).</p>
+        <p class="howto"><b>الاستخدام:</b> للمدارس التي تملك ترخيصًا — مكتبة رموز واسعة وقوالب جاهزة.</p>
+        <a class="open" href="https://goboardmaker.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- TEXT -->
+  <section class="group" data-cat="text" style="--c:var(--text)">
+    <div class="group-head"><span class="bar"></span><h2>تبسيط النصوص ومستوى القراءة</h2><span class="n"></span></div>
+    <div class="grid">
+
+      <article class="tool">
+        <h3>Diffit</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">يحوّل أيّ نصّ أو رابط أو موضوع إلى مستويات قراءة متعدّدة مع مفردات وأسئلة جاهزة — بأكثر من ٣٥ لغة، وتكييفٌ كامل بالعربية.</p>
+        <p class="howto"><b>الاستخدام:</b> الصق نصًّا أو رابطًا، اختر المستوى واللغة، واحصل على نسخٍ متدرّجة مع أسئلة.</p>
+        <a class="open" href="https://diffit.me" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>MagicSchool AI</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">أكثر من ٨٠ أداةً للمعلّم: تبسيط مستوى النصّ، ومترجم، ومولّد أوراق عمل، وكتابة خططٍ فرديّة.</p>
+        <p class="howto"><b>الاستخدام:</b> اختر «Text Leveler» أو «Translator»، الصق النصّ، واضبط المستوى أو اللغة.</p>
+        <a class="open" href="https://www.magicschool.ai" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Brisk Teaching</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">إضافة كروم</span></div>
+        <p class="desc">إضافة كروم مجّانيّة تغيّر مستوى قراءة أيّ نصّ أو صفحة وأنت داخل Google Docs.</p>
+        <p class="howto"><b>الاستخدام:</b> ثبّت الإضافة، حدّد النصّ، ثمّ اختر «Change reading level».</p>
+        <a class="open" href="https://www.briskteaching.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Claude</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">مساعد ذكاء اصطناعيّ يعيد صياغة نصّ بمستوى أبسط بالعربية، ويولّد أسئلة ومطابقات وبطاقات.</p>
+        <p class="howto"><b>الاستخدام:</b> الصق النصّ واطلب: «بسّطه لطالب صفّ ثالث» أو «حوّله إلى أسئلة صواب/خطأ».</p>
+        <a class="open" href="https://claude.ai" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Rewordify</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">إنجليزيّ فقط</span></div>
+        <p class="desc">يبسّط النصوص الإنجليزيّة الصعبة ويشرح الكلمات — للإنجليزيّة فقط.</p>
+        <p class="howto"><b>الاستخدام:</b> الصق نصًّا إنجليزيًّا؛ ستظهر الكلمات الصعبة مبسّطةً وقابلةً للنقر.</p>
+        <a class="open" href="https://rewordify.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- WORKSHEET -->
+  <section class="group" data-cat="worksheet" style="--c:var(--worksheet)">
+    <div class="group-head"><span class="bar"></span><h2>أوراق العمل والاختبارات</h2><span class="n"></span></div>
+    <div class="grid">
+
+      <article class="tool">
+        <h3>Canva للتعليم</h3>
+        <div class="badges"><span class="badge free">مجّاني للمعلّمين</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">مجّانيّ للمعلّمين؛ قوالب لأوراق العمل والبطاقات والموادّ البصريّة مع دعمٍ كاملٍ للعربية واتّجاه RTL.</p>
+        <p class="howto"><b>الاستخدام:</b> اختر قالبًا، عدّل النصّ والصور بالعربية، ثمّ نزّله PDF للطباعة.</p>
+        <a class="open" href="https://www.canva.com/education/" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>LiveWorksheets</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">يحوّل أوراق العمل إلى تمارين تفاعليّة ذاتيّة التصحيح، بعدّة لغات ومنها العربية.</p>
+        <p class="howto"><b>الاستخدام:</b> ارفع ورقة عمل، أضِف مربّعات الإجابة، وشاركها رابطًا يصحّح تلقائيًّا.</p>
+        <a class="open" href="https://www.liveworksheets.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Wizer.me</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span></div>
+        <p class="desc">بناء أوراق عمل تفاعليّة (اختيار من متعدّد، مطابقة، صور، صوت).</p>
+        <p class="howto"><b>الاستخدام:</b> أنشئ ورقة، أضِف أنواع الأسئلة والوسائط، وشاركها مع الصفّ.</p>
+        <a class="open" href="https://www.wizer.me" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Quizizz</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span></div>
+        <p class="desc">اختبارات ممتعة ذاتيّة الوتيرة مع قراءة صوتيّة وخيارات ترجمة.</p>
+        <p class="howto"><b>الاستخدام:</b> أنشئ اختبارًا أو استعمل جاهزًا، وفعّل القراءة الصوتيّة للطلاب.</p>
+        <a class="open" href="https://quizizz.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Kahoot!</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span></div>
+        <p class="desc">اختبارات بأسلوب اللعبة تحفّز المشاركة الصفّيّة.</p>
+        <p class="howto"><b>الاستخدام:</b> جهّز أسئلة قصيرة بالصور، والعب مع الصفّ مباشرةً.</p>
+        <a class="open" href="https://kahoot.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Google Forms</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">نماذج واختبارات مجّانيّة مع تصحيحٍ تلقائيّ، وتعمل بالعربية.</p>
+        <p class="howto"><b>الاستخدام:</b> أنشئ اختبارًا، فعّل وضع «Quiz»، وأضِف الصور ومفاتيح الإجابات.</p>
+        <a class="open" href="https://forms.google.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>TeacherMade</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span></div>
+        <p class="desc">يحوّل أوراق العمل وملفّات PDF إلى أنشطة تفاعليّة ذاتيّة التصحيح.</p>
+        <p class="howto"><b>الاستخدام:</b> ارفع ملفًّا، ضع فوقه حقول الإجابة، وأرسله للطلاب.</p>
+        <a class="open" href="https://teachermade.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- BANKS -->
+  <section class="group" data-cat="banks" style="--c:var(--banks)">
+    <div class="group-head"><span class="bar"></span><h2>بنوك موادّ جاهزة</h2><span class="n"></span></div>
+    <div class="grid">
+
+      <article class="tool">
+        <h3>Twinkl</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span><span class="badge ar">يدعم العربية</span></div>
+        <p class="desc">بنكٌ ضخم من أوراق العمل والبطاقات وموادّ التربية الخاصّة، مع قسمٍ عربيّ.</p>
+        <p class="howto"><b>الاستخدام:</b> ابحث عن الموضوع والفئة العمريّة، وحمّل موادّ جاهزة أو عدّلها.</p>
+        <a class="open" href="https://www.twinkl.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Teachers Pay Teachers</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge paid">/ مدفوع</span></div>
+        <p class="desc">سوق موادّ من إعداد معلّمين حول العالم؛ كثيرٌ منها مجّانيّ.</p>
+        <p class="howto"><b>الاستخدام:</b> ابحث عن «special education» أو «adapted»، وصفِّ النتائج المجّانيّة.</p>
+        <a class="open" href="https://www.teacherspayteachers.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>موادّ أراسّاك</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge ar">عدّة لغات</span></div>
+        <p class="desc">بنك موادّ جاهزة مجّانيّ بالرموز (جداول، مطابقات، بطاقات) بعدّة لغات.</p>
+        <p class="howto"><b>الاستخدام:</b> تصفّح الموادّ الجاهزة بالرموز، وحمّلها أو اطبعها.</p>
+        <a class="open" href="https://arasaac.org/materials" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Education.com</h3>
+        <div class="badges"><span class="badge free">خطّة مجّانيّة</span><span class="badge">إنجليزيّ</span></div>
+        <p class="desc">آلاف أوراق العمل والألعاب والدروس مرتّبة حسب الصفّ والمهارة.</p>
+        <p class="howto"><b>الاستخدام:</b> صفِّ حسب الصفّ والمهارة، واطبع ورقة العمل.</p>
+        <a class="open" href="https://www.education.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>K5 Learning</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">إنجليزيّ</span></div>
+        <p class="desc">أوراق عمل مجّانيّة في القراءة والرياضيّات للمرحلة الابتدائيّة.</p>
+        <p class="howto"><b>الاستخدام:</b> اختر الصفّ والموضوع، وحمّل ملفّ PDF مجّانًا.</p>
+        <a class="open" href="https://www.k5learning.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- MATH & SCHEDULES -->
+  <section class="group" data-cat="math" style="--c:var(--math)">
+    <div class="group-head"><span class="bar"></span><h2>الرياضيّات والجداول البصريّة</h2><span class="n"></span></div>
+    <div class="grid">
+
+      <article class="tool">
+        <h3>Math Learning Center</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">لا يعتمد على اللغة</span></div>
+        <p class="desc">تطبيقات مجّانيّة لمحسوسات رياضيّة (خطّ أعداد، إطار عشرات، أشكال، لوحة مئويّة).</p>
+        <p class="howto"><b>الاستخدام:</b> افتح التطبيق في المتصفّح واستعمله على السبّورة أو الجهاز.</p>
+        <a class="open" href="https://apps.mathlearningcenter.org" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Toy Theater</h3>
+        <div class="badges"><span class="badge free">مجّاني</span></div>
+        <p class="desc">محسوسات وألعاب رياضيّة تفاعليّة مجّانيّة على الشاشة للمرحلة الأولى.</p>
+        <p class="howto"><b>الاستخدام:</b> اختر أداة (عدّ، كسور، أشكال) واستعملها مباشرةً بلا تسجيل.</p>
+        <a class="open" href="https://toytheater.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Mathigon Polypad</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">لا يعتمد على اللغة</span></div>
+        <p class="desc">لوحٌ تفاعليّ غنيّ بالمحسوسات الرياضيّة، تسحبها وتجمّعها بحرّيّة.</p>
+        <p class="howto"><b>الاستخدام:</b> اسحب القطع (كسور، مكعّبات، أشكال) على اللوح واعرضها للطالب.</p>
+        <a class="open" href="https://mathigon.org/polypad" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Time Timer</h3>
+        <div class="badges"><span class="badge free">نسخة ويب مجّانيّة</span></div>
+        <p class="desc">مؤقّت بصريّ يُظهر الوقت كقرصٍ ملوّن يتناقص — يساعد على الانتقالات والتنظيم.</p>
+        <p class="howto"><b>الاستخدام:</b> اضبط المدّة، واعرض القرص المتناقص أمام الطالب أثناء المهمّة.</p>
+        <a class="open" href="https://www.timetimer.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+      <article class="tool">
+        <h3>Online-Stopwatch</h3>
+        <div class="badges"><span class="badge free">مجّاني</span><span class="badge">لا يعتمد على اللغة</span></div>
+        <p class="desc">مؤقّتات صفّيّة بصريّة وممتعة مجّانيّة تساعد على ضبط الوقت.</p>
+        <p class="howto"><b>الاستخدام:</b> اختر مؤقّتًا بصريًّا واعرضه للصفّ لتحديد وقت النشاط.</p>
+        <a class="open" href="https://www.online-stopwatch.com" target="_blank" rel="noopener">افتح الأداة <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17L17 7M17 7H8M17 7v9"/></svg></a>
+      </article>
+
+    </div>
+  </section>
+
+  <div class="empty" id="empty">لا توجد أداةٌ مطابِقة — جرّب كلمةً أخرى أو اختر «الكلّ».</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    تُفتح كلّ أداة في تبويبٍ جديد. <b>الشارات</b> توضّح ما هو مجّانيّ وما هو مدفوع، وأيّ الأدوات يدعم العربية.
+    اختر أداةً واحدة تجرّبها هذا الأسبوع — التكييف يبدأ بخطوةٍ صغيرة.
+  </div>
+</footer>
+
+<script>
+  const tools = Array.from(document.querySelectorAll('.tool'));
+  const groups = Array.from(document.querySelectorAll('.group'));
+  const chips = Array.from(document.querySelectorAll('.chip'));
+  const q = document.getElementById('q');
+  const countEl = document.getElementById('count');
+  const emptyEl = document.getElementById('empty');
+  let activeCat = 'all';
+
+  const toAr = n => String(n).replace(/[0-9]/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+
+  function apply(){
+    const query = q.value.trim().toLowerCase();
+    let total = 0;
+    groups.forEach(group => {
+      const catOk = activeCat === 'all' || group.dataset.cat === activeCat;
+      let shown = 0;
+      group.querySelectorAll('.tool').forEach(t => {
+        const match = catOk && t.textContent.toLowerCase().includes(query);
+        t.style.display = match ? '' : 'none';
+        if (match) shown++;
+      });
+      group.style.display = (catOk && shown > 0) ? '' : 'none';
+      const n = group.querySelector('.n');
+      if (n) n.textContent = shown ? toAr(shown) + (shown === 1 ? ' أداة' : ' أدوات') : '';
+      total += shown;
+    });
+    countEl.textContent = toAr(total) + (total === 1 ? ' أداة' : ' أداة');
+    emptyEl.style.display = total ? 'none' : 'block';
+  }
+
+  chips.forEach(chip => chip.addEventListener('click', () => {
+    activeCat = chip.dataset.cat;
+    chips.forEach(c => c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'));
+    apply();
+  }));
+  q.addEventListener('input', apply);
+  apply();
+</script>
+</body>
+</html>
